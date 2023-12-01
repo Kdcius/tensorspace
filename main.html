@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TensorSpace - Hello World Empty TensorSpace Model</title>
+    <meta name="author" content="syt123450 / https://github.com/syt123450">
+
+    <script src="../lib/three.min.js"></script>
+    <script src="../lib/tween.min.js"></script>
+    <script src="../lib/tf.min.js"></script>
+    <script src="../lib/TrackballControls.js"></script>
+    <script src="../../dist/tensorspace.min.js"></script>
+
+    <script src="../lib/jquery.min.js"></script>
+
+    <style>
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+
+	$( function() {
+            console.log("Loading model from container")
+		let modelContainer = document.getElementById( "container" );
+		let model = new TSP.models.Sequential( modelContainer );
+
+            //Here is the model: {"format": "layers-model", "generatedBy": "keras v2.9.0", "convertedBy": "TensorFlow.js Converter v4.14.0", "modelTopology": {"keras_version": "2.9.0", "backend": "tensorflow", "model_config": {"class_name": "Model", "config": {"name": "model", "layers": [{"class_name": "InputLayer", "config": {"batch_input_shape": [null, 22], "dtype": "float32", "sparse": false, "ragged": false, "name": "input_1"}, "name": "input_1", "inbound_nodes": []}, {"class_name": "Dense", "config": {"name": "dense", "trainable": true, "dtype": "float32", "units": 10, "activation": "relu", "use_bias": true, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "bias_constraint": null}, "name": "dense", "inbound_nodes": [[["input_1", 0, 0, {}]]]}, {"class_name": "Dense", "config": {"name": "dense_1", "trainable": true, "dtype": "float32", "units": 1, "activation": "sigmoid", "use_bias": true, "kernel_initializer": {"class_name": "GlorotUniform", "config": {"seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "bias_constraint": null}, "name": "dense_1", "inbound_nodes": [[["dense", 0, 0, {}]]]}], "input_layers": [["input_1", 0, 0]], "output_layers": [["input_1", 0, 0], ["dense", 0, 0], ["dense_1", 0, 0]]}}}, "weightsManifest": [{"paths": ["group1-shard1of1.bin"], "weights": [{"name": "dense/kernel", "shape": [22, 10], "dtype": "float32"}, {"name": "dense/bias", "shape": [10], "dtype": "float32"}, {"name": "dense_1/kernel", "shape": [10, 1], "dtype": "float32"}, {"name": "dense_1/bias", "shape": [1], "dtype": "float32"}]}]}
+            console.log("Adding layers")
+            // Add input layer
+            model.add (new TSP.layers.Input1d( {
+                  shape: [ 22 ]
+            } ) );
+            // Add hidden layer
+            model.add( new TSP.layers.Dense( {
+                  units: 10,
+                  activation: "relu"
+            } ) );
+            // Add output layer
+            model.add( new TSP.layers.Dense( {
+                  units: 1,
+                  activation: "sigmoid"
+            } ) );
+            
+            console.log("Loading model")
+            model.load( {
+                  type: "tfjs",
+                  url: "https://raw.githubusercontent.com/Kdcius/test/main/model.json"
+            } );
+
+            console.log("Initializing model")
+		model.init( function() {
+
+            $.ajax({
+                  url: "./data/5.json",
+                  type: 'GET',
+                  async: true,
+                  dataType: 'json',
+                  success: function (data) {
+
+                        model.predict( data );
+
+                  }
+            });
+
+
+            } );
+
+
+	} );
+
+</script>
+
+</body>
+</html>
