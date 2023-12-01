@@ -61,14 +61,14 @@
             console.log("Loading model")
             model.load( {
                   type: "tfjs",
-                  url: "https://raw.githubusercontent.com/Kdcius/test/main/model.json"
+                  url: "https://raw.githubusercontent.com/Kdcius/tensorspace/main/model.json"
             } );
 
             console.log("Initializing model")
 		model.init( function() {
 
             $.ajax({
-                  url: "./data/5.json",
+                  url: "https://raw.githubusercontent.com/Kdcius/tensorspace/main/data/5.json",
                   type: 'GET',
                   async: true,
                   dataType: 'json',
